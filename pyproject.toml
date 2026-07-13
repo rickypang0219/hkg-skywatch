@@ -1,0 +1,32 @@
+[project]
+name = "hkg-skywatch"
+version = "0.1.0"
+description = "A near-real-time Hong Kong airport operations dashboard for aviation enthusiasts"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=3.0.3",
+    "plotly>=6.9.0",
+    "pydeck>=0.9.3",
+    "requests>=2.34.2",
+    "streamlit>=1.47",
+]
+
+[dependency-groups]
+dev = [
+    "playwright>=1.61.0",
+    "pytest>=9.1.1",
+    "ruff>=0.15.21",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
