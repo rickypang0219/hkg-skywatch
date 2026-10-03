@@ -1,5 +1,7 @@
 # HKG Skywatch
 
+The app has been rewritten in **Rust + WebAssembly** with an Apple-inspired UI and a GitHub Pages deployment workflow. See [RUST_README.md](RUST_README.md) for current setup, static deployment and data-access limitations. The Python files below remain as a reference and are not deployed.
+
 A near-real-time Streamlit dashboard for Hong Kong International Airport (VHHH/HKG). It combines the official HKIA movement board with volunteer ADS-B feeds so an aviation enthusiast can monitor today's passenger movements, inspect live aircraft, and watch Cathay Pacific departures.
 
 ## MVP features

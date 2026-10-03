@@ -1,0 +1,7 @@
+# Use Apple's linker on macOS; Nix's cc wrapper misquotes Unicode project paths.
+# Linux/GitHub Actions keep their default compiler.
+[target.aarch64-apple-darwin]
+linker = "/usr/bin/cc"
+
+[target.x86_64-apple-darwin]
+linker = "/usr/bin/cc"

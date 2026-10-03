@@ -1,0 +1,63 @@
+name: Build and deploy WebAssembly dashboard
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            . -> target
+            collector -> target
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/flights.json
+          key: hkia-${{ github.run_id }}
+          restore-keys: hkia-
+      - run: cargo fmt --check
+      - run: cargo test --locked
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo clippy --locked --target wasm32-unknown-unknown --bin hkg-skywatch -- -D warnings
+      - run: cargo fmt --check --manifest-path collector/Cargo.toml
+      - run: cargo clippy --locked --manifest-path collector/Cargo.toml -- -D warnings
+      - name: Collect official flight boards
+        run: cargo run --locked --release --manifest-path collector/Cargo.toml
+      - uses: actions/cache/save@v4
+        with:
+          path: data/flights.json
+          key: hkia-${{ github.run_id }}
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: trunk@0.21.14,wasm-bindgen-cli@0.2.104
+      - run: trunk build --release --public-url ./ --locked
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
