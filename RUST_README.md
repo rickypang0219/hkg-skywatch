@@ -40,6 +40,12 @@ trunk build --release --locked --public-url ./
 
 ## GitHub Pages
 
+Repository: https://github.com/rickypang0219/hkg-skywatch
+
+Project website (available after Pages is enabled): https://rickypang0219.github.io/hkg-skywatch/
+
+This project uses its own repository subpath. It does not modify the personal website repository or the root URL `https://rickypang0219.github.io/`. No custom domain is configured.
+
 1. Push this repository to GitHub on `main`.
 2. In **Settings → Pages → Build and deployment**, choose **GitHub Actions**.
 3. Run **Build and deploy WebAssembly dashboard**, or push a commit.
@@ -95,4 +101,4 @@ Fixtures intercept upstream requests only in the test browser. They are not ship
 - Aircraft selection survives a 60-second refresh. Cathay filter, mobile marker alignment, hourly counts, snapshot/OpenSky fallback and stale-date rejection passed.
 - On 3 October 2026, the real browser showed 437 arrivals and 439 departures from the official snapshot. Live aircraft endpoints timed out in this environment; the UI reported unavailability. Mocked response tests prove the interaction path, not upstream availability.
 
-The GitHub deployment workflow is prepared but has not been run in a remote repository by this task.
+On 3 October 2026, the first GitHub Actions run passed all Rust tests, formatting, Clippy, official-flight collection and production WASM build. The static artifact uploaded successfully. Deployment returned HTTP 404 because GitHub Pages is not yet enabled for this repository. Choose **Settings → Pages → Build and deployment → Source: GitHub Actions**, then rerun the failed deployment job. Run: https://github.com/rickypang0219/hkg-skywatch/actions/runs/37130083279
